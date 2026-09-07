@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizer Live Dashboard | Smart Crowd Management</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="/index.html" class="flex items-center space-x-2 text-indigo-400 hover:text-indigo-300 transition">
+          <i class="ph-bold ph-arrow-left text-lg"></i>
+          <span class="text-sm font-medium">Portal</span>
+        </a>
+        <span class="text-slate-600">|</span>
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+            <i class="ph-bold ph-chart-line-up text-xl"></i>
+          </div>
+          <h1 class="text-lg font-bold tracking-tight text-white">Organizer Live Command Center</h1>
+        </div>
+      </div>
+
+      <!-- Event Selector & Action Buttons -->
+      <div class="flex items-center space-x-3">
+        <div class="relative">
+          <select id="eventSelector" class="bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-2 pr-8 focus:ring-2 focus:ring-indigo-500 focus:outline-none appearance-none cursor-pointer">
+            <option value="">Loading events...</option>
+          </select>
+          <i class="ph-bold ph-caret-down absolute right-2.5 top-3 text-slate-400 pointer-events-none text-xs"></i>
+        </div>
+
+        <button id="btnNewEventModal" class="px-3.5 py-2 text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center gap-1.5 shadow-lg shadow-indigo-600/20 transition">
+          <i class="ph-bold ph-plus text-base"></i>
+          <span>New Event</span>
+        </button>
+
+        <button id="btnRefresh" title="Refresh Live Data" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+          <i class="ph-bold ph-arrows-clockwise text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <!-- Active Event Header Banner -->
+    <div id="eventHeroBanner" class="glass-panel p-6 rounded-2xl relative overflow-hidden border border-slate-800">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-900/60 text-indigo-300 border border-indigo-700/50">
+              Live Monitoring
+            </span>
+            <span id="heroVenue" class="text-xs text-slate-400 flex items-center gap-1">
+              <i class="ph-bold ph-map-pin"></i> <span>Auditorium</span>
+            </span>
+          </div>
+          <h2 id="heroTitle" class="text-2xl font-extrabold text-white tracking-tight">Select an Event to Begin</h2>
+          <p id="heroDateTime" class="text-sm text-slate-400 mt-1 flex items-center gap-2">
+            <i class="ph-bold ph-calendar"></i> <span id="heroDateText">--</span>
+          </p>
+        </div>
+
+        <!-- Quick Capacity Adjustment Action -->
+        <div class="flex items-center gap-3 bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+          <div class="text-right pr-2">
+            <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Hall Capacity</div>
+            <div id="heroCapacityDisplay" class="text-xl font-bold font-mono text-indigo-400">--</div>
+          </div>
+          <button id="btnAdjustCapacity" class="px-3 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg flex items-center gap-1 transition">
+            <i class="ph-bold ph-sliders"></i> Adjust Capacity
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual-Metric Risk Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Pre-Event Risk Card -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-800 relative">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="ph-bold ph-hourglass-high text-sky-400"></i> Pre-Event Risk Indicator
+            </div>
+            <div class="text-xs text-slate-400 mt-0.5">Calculated: <code class="text-slate-300">expectedAttendance / hallCapacity</code></div>
+          </div>
+          <div id="preEventRiskBadge">--</div>
+        </div>
+
+        <div class="mt-4 flex items-baseline justify-between">
+          <div class="text-3xl font-extrabold font-mono text-white" id="preEventLoadPct">0%</div>
+          <div class="text-xs text-slate-400">
+            <span id="expectedCount" class="font-bold text-slate-200">0</span> pre-registered of <span id="capacityPreRef" class="text-slate-300">0</span> capacity
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mt-3 w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+          <div id="preEventProgressBar" class="h-2.5 rounded-full transition-all duration-500 bg-sky-500" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Live Risk Card -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-800 relative">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="ph-bold ph-radio-button text-emerald-400 animate-pulse"></i> Live Gate Risk Indicator
+            </div>
+            <div class="text-xs text-slate-400 mt-0.5">Calculated: <code class="text-slate-300">currentAttendance / hallCapacity</code></div>
+          </div>
+          <div id="liveRiskBadge">--</div>
+        </div>
+
+        <div class="mt-4 flex items-baseline justify-between">
+          <div class="text-3xl font-extrabold font-mono text-white" id="liveOccupancyPct">0%</div>
+          <div class="text-xs text-slate-400">
+            <span id="currentCheckedCount" class="font-bold text-slate-200">0</span> checked in of <span id="capacityLiveRef" class="text-slate-300">0</span> capacity
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mt-3 w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+          <div id="liveProgressBar" class="h-2.5 rounded-full transition-all duration-500 bg-emerald-500" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live 4-Metric Statistics Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Card 1: Checked-In -->
+      <div class="glass-card p-4 rounded-xl border border-slate-800">
+        <div class="text-xs text-slate-400 font-medium flex items-center justify-between">
+          <span>Current Check-Ins</span>
+          <i class="ph-bold ph-user-check text-emerald-400 text-base"></i>
+        </div>
+        <div id="statCheckedIn" class="text-3xl font-extrabold font-mono text-emerald-400 mt-2">0</div>
+        <div class="text-xs text-slate-400 mt-1">Live physically present</div>
+      </div>
+
+      <!-- Card 2: Expected -->
+      <div class="glass-card p-4 rounded-xl border border-slate-800">
+        <div class="text-xs text-slate-400 font-medium flex items-center justify-between">
+          <span>Total Registrations</span>
+          <i class="ph-bold ph-users text-sky-400 text-base"></i>
+        </div>
+        <div id="statRegistered" class="text-3xl font-extrabold font-mono text-sky-400 mt-2">0</div>
+        <div class="text-xs text-slate-400 mt-1">Pre-registered pool</div>
+      </div>
+
+      <!-- Card 3: Seats Remaining -->
+      <div class="glass-card p-4 rounded-xl border border-slate-800">
+        <div class="text-xs text-slate-400 font-medium flex items-center justify-between">
+          <span>Seats Remaining</span>
+          <i class="ph-bold ph-armchair text-amber-400 text-base"></i>
+        </div>
+        <div id="statSeatsLeft" class="text-3xl font-extrabold font-mono text-amber-400 mt-2">0</div>
+        <div class="text-xs text-slate-400 mt-1">Unoccupied physical seats</div>
+      </div>
+
+      <!-- Card 4: Hall Capacity -->
+      <div class="glass-card p-4 rounded-xl border border-slate-800">
+        <div class="text-xs text-slate-400 font-medium flex items-center justify-between">
+          <span>Venue Threshold</span>
+          <i class="ph-bold ph-buildings text-indigo-400 text-base"></i>
+        </div>
+        <div id="statCapacity" class="text-3xl font-extrabold font-mono text-indigo-400 mt-2">0</div>
+        <div class="text-xs text-slate-400 mt-1">Maximum authorized limit</div>
+      </div>
+    </div>
+
+    <!-- Operational Split Grid: Live Activity Stream & Attendee Roster -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Live Audit History Stream (Left 2 cols) -->
+      <div class="lg:col-span-2 glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <i class="ph-bold ph-broadcast text-indigo-400 text-lg"></i>
+            <h3 class="font-bold text-white text-sm tracking-tight">Live Gate Check-In Stream</h3>
+          </div>
+          <span id="historyCountBadge" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-mono">0 events</span>
+        </div>
+
+        <div id="activityStreamContainer" class="flex-1 overflow-y-auto max-h-96 divide-y divide-slate-800/60 mt-2 space-y-1">
+          <div class="text-center py-8 text-slate-400 text-xs">Waiting for gatekeeper check-ins...</div>
+        </div>
+      </div>
+
+      <!-- Registered Attendee Overview (Right 1 col) -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <i class="ph-bold ph-address-book text-sky-400 text-lg"></i>
+            <h3 class="font-bold text-white text-sm tracking-tight">Student Roster</h3>
+          </div>
+          <span id="rosterCountBadge" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-mono">0</span>
+        </div>
+
+        <div id="rosterListContainer" class="flex-1 overflow-y-auto max-h-96 divide-y divide-slate-800/60 mt-2 space-y-1">
+          <div class="text-center py-8 text-slate-400 text-xs">No registered students found.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal: Adjust Capacity (Mid-Event Capacity Updates) -->
+  <div id="modalAdjustCapacity" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-2xl max-w-md w-full border border-slate-700 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-sliders text-indigo-400"></i> Adjust Hall Capacity
+        </h3>
+        <button id="btnCloseCapacityModal" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+      <p class="text-xs text-slate-400 mb-4">
+        Updating hall capacity mid-event will immediately trigger dynamic recalculation of <span class="text-sky-300">preEventRiskBand</span> and <span class="text-emerald-300">liveRiskBand</span> across all connected monitors.
+      </p>
+
+      <form id="formAdjustCapacity" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">New Hall Capacity</label>
+          <input type="number" id="inputNewCapacity" min="1" required class="w-full glass-input px-3 py-2 text-white rounded-lg font-mono text-base focus:outline-none">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="btnCancelCapacityModal" class="px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg shadow-lg">Save & Recalculate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Create New Event -->
+  <div id="modalNewEvent" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-2xl max-w-lg w-full border border-slate-700 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-calendar-plus text-indigo-400"></i> Create New College Event
+        </h3>
+        <button id="btnCloseNewEventModal" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <form id="formNewEvent" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Event Name</label>
+          <input type="text" id="eventName" required placeholder="e.g. National Cyber Security Conclave" class="w-full glass-input px-3 py-2 text-sm text-white rounded-lg focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Venue / Auditorium</label>
+          <input type="text" id="eventVenue" required placeholder="e.g. Ramanujan Hall (Block C)" class="w-full glass-input px-3 py-2 text-sm text-white rounded-lg focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Hall Capacity</label>
+            <input type="number" id="eventCapacity" min="1" required placeholder="e.g. 150" class="w-full glass-input px-3 py-2 text-sm text-white rounded-lg focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Date & Time</label>
+            <input type="datetime-local" id="eventDateTime" required class="w-full glass-input px-3 py-2 text-sm text-white rounded-lg focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Registration Deadline</label>
+          <input type="datetime-local" id="eventDeadline" required class="w-full glass-input px-3 py-2 text-sm text-white rounded-lg focus:outline-none">
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" id="btnCancelNewEventModal" class="px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg shadow-lg">Publish Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Shared App Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

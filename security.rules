@@ -1,0 +1,70 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "events": {
+      // Any user (or student kiosk) can view event listings and hall capacities
+      ".read": true,
+
+      "$eventId": {
+        // Only authenticated organizers/staff can create or update events (including hall capacity)
+        ".write": "auth != null && (auth.token.role === 'organizer' || auth.token.admin === true)",
+        ".validate": "newData.hasChildren(['name', 'venue', 'hallCapacity', 'dateTime', 'registrationDeadline'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "venue": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "hallCapacity": { ".validate": "newData.isNumber() && newData.val() > 0" },
+        "dateTime": { ".validate": "newData.isString()" },
+        "registrationDeadline": { ".validate": "newData.isString()" }
+      }
+    },
+
+    "registrations": {
+      "$eventId": {
+        // Organizers and gatekeepers can read all registrations for attendee lists
+        ".read": "auth != null",
+
+        "$studentId": {
+          // Public students can read their own registration status if studentId matches or if public
+          ".read": true,
+
+          // Registration creation: Public can insert their new registration before deadline,
+          // but CANNOT set checkedIn to true upon initial registration.
+          // Check-in update: Only authenticated staff/gatekeeper can flip checkedIn from false to true.
+          ".write": "(
+            // Scenario 1: New registration by student (can only register if record doesn't exist yet)
+            (!data.exists() && newData.exists() && 
+             newData.child('studentId').val() === $studentId && 
+             newData.child('checkedIn').val() === false &&
+             newData.hasChildren(['studentId', 'name', 'email', 'registeredAt']))
+            ||
+            // Scenario 2: Check-in operation performed by authorized gatekeeper / organizer
+            (data.exists() && auth != null && 
+             (auth.token.role === 'gatekeeper' || auth.token.role === 'organizer' || auth.token.admin === true))
+          )",
+
+          ".validate": "newData.hasChildren(['studentId', 'name', 'email', 'registeredAt', 'checkedIn'])",
+          "studentId": { ".validate": "newData.isString() && newData.val() === $studentId" },
+          "name": { ".validate": "newData.isString() && newData.val().length > 0" },
+          "email": { ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i)" },
+          "registeredAt": { ".validate": "newData.isString()" },
+          "checkedIn": { ".validate": "newData.isBoolean()" },
+          "checkedInAt": { ".validate": "newData.val() == null || newData.isString()" }
+        }
+      }
+    },
+
+    "history": {
+      "$eventId": {
+        // Organizers and auditors can read the check-in history stream
+        ".read": "auth != null && (auth.token.role === 'organizer' || auth.token.admin === true)",
+
+        "$timestamp": {
+          // Only authenticated gatekeeper / organizer system can log audit entries
+          ".write": "auth != null && (auth.token.role === 'gatekeeper' || auth.token.role === 'organizer' || auth.token.admin === true)",
+          ".validate": "newData.hasChildren(['eventId', 'timestamp', 'studentId', 'action', 'overCapacityFlag'])"
+        }
+      }
+    }
+  }
+}

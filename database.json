@@ -1,0 +1,242 @@
+{
+  "events": {
+    "evt_ai_symposium_2026": {
+      "id": "evt_ai_symposium_2026",
+      "name": "National AI & Robotics Symposium 2026",
+      "venue": "Dr. APJ Abdul Kalam Auditorium (Hall A)",
+      "hallCapacity": 3,
+      "dateTime": "2026-09-15T09:30:00.000Z",
+      "registrationDeadline": "2026-09-14T18:00:00.000Z",
+      "createdAt": "2026-09-01T08:00:00.000Z"
+    },
+    "evt_hackathon_2026": {
+      "id": "evt_hackathon_2026",
+      "name": "Smart Campus Hackathon Finale",
+      "venue": "Turing Innovation Lab & Seminar Hall",
+      "hallCapacity": 60,
+      "dateTime": "2026-09-20T10:00:00.000Z",
+      "registrationDeadline": "2026-09-19T20:00:00.000Z",
+      "createdAt": "2026-09-02T10:00:00.000Z"
+    },
+    "evt_cyber_workshop_2026": {
+      "id": "evt_cyber_workshop_2026",
+      "name": "Hands-on Ethical Hacking & Cybersecurity Workshop",
+      "venue": "Computer Science Block - Lab 3",
+      "hallCapacity": 30,
+      "dateTime": "2026-09-25T14:00:00.000Z",
+      "registrationDeadline": "2026-09-24T23:59:00.000Z",
+      "createdAt": "2026-09-03T11:00:00.000Z"
+    },
+    "evt_automated_test_seminar_mtr3xz8y": {
+      "id": "evt_automated_test_seminar_mtr3xz8y",
+      "name": "Automated Test Seminar",
+      "venue": "Seminar Hall B",
+      "hallCapacity": 3,
+      "dateTime": "2026-10-01T10:00:00.000Z",
+      "registrationDeadline": "2026-09-30T23:59:59.000Z",
+      "createdAt": "2026-09-07T10:38:28.786Z"
+    }
+  },
+  "registrations": {
+    "evt_ai_symposium_2026": {
+      "CS2026001": {
+        "studentId": "CS2026001",
+        "name": "Aarav Sharma",
+        "email": "aarav.sharma@college.edu",
+        "registeredAt": "2026-09-02T10:15:00.000Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T09:05:00.000Z"
+      },
+      "CS2026002": {
+        "studentId": "CS2026002",
+        "name": "Priya Nair",
+        "email": "priya.nair@college.edu",
+        "registeredAt": "2026-09-02T10:18:00.000Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T09:12:00.000Z"
+      },
+      "EC2026014": {
+        "studentId": "EC2026014",
+        "name": "Rohan Patel",
+        "email": "rohan.patel@college.edu",
+        "registeredAt": "2026-09-02T11:30:00.000Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:44:01.925Z"
+      },
+      "ME2026033": {
+        "studentId": "ME2026033",
+        "name": "Sneha Verma",
+        "email": "sneha.verma@college.edu",
+        "registeredAt": "2026-09-03T14:00:00.000Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:44:39.705Z"
+      },
+      "KLN": {
+        "studentId": "KLN",
+        "name": "l'ln",
+        "email": "tamilmuthu8080@gmail.com",
+        "registeredAt": "2026-09-07T10:49:58.742Z",
+        "checkedIn": false,
+        "checkedInAt": null
+      }
+    },
+    "evt_hackathon_2026": {
+      "CS2026001": {
+        "studentId": "CS2026001",
+        "name": "Aarav Sharma",
+        "email": "aarav.sharma@college.edu",
+        "registeredAt": "2026-09-03T09:00:00.000Z",
+        "checkedIn": false,
+        "checkedInAt": null
+      },
+      "CS2026099": {
+        "studentId": "CS2026099",
+        "name": "Vikram Singh",
+        "email": "vikram@college.edu",
+        "registeredAt": "2026-09-07T10:46:11.720Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:46:11.833Z"
+      },
+      "CS2026100": {
+        "studentId": "CS2026100",
+        "name": "Ananya Roy",
+        "email": "ananya@college.edu",
+        "registeredAt": "2026-09-07T10:46:11.825Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:46:11.835Z"
+      }
+    },
+    "evt_cyber_workshop_2026": {},
+    "evt_automated_test_seminar_mtr3xz8y": {
+      "STU101": {
+        "studentId": "STU101",
+        "name": "Alice Johnson",
+        "email": "alice@college.edu",
+        "registeredAt": "2026-09-07T10:38:28.797Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:38:28.802Z"
+      },
+      "STU102": {
+        "studentId": "STU102",
+        "name": "Bob Smith",
+        "email": "bob@college.edu",
+        "registeredAt": "2026-09-07T10:38:28.799Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:38:28.804Z"
+      },
+      "STU103": {
+        "studentId": "STU103",
+        "name": "Charlie Brown",
+        "email": "charlie@college.edu",
+        "registeredAt": "2026-09-07T10:38:28.800Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:38:28.806Z"
+      },
+      "STU104": {
+        "studentId": "STU104",
+        "name": "Dana Scully",
+        "email": "dana@college.edu",
+        "registeredAt": "2026-09-07T10:38:28.800Z",
+        "checkedIn": true,
+        "checkedInAt": "2026-09-07T10:38:28.808Z"
+      }
+    }
+  },
+  "history": {
+    "evt_ai_symposium_2026": {
+      "1725699900000": {
+        "eventId": "evt_ai_symposium_2026",
+        "timestamp": 1725699900000,
+        "studentId": "CS2026001",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T09:05:00.000Z"
+      },
+      "1725700320000": {
+        "eventId": "evt_ai_symposium_2026",
+        "timestamp": 1725700320000,
+        "studentId": "CS2026002",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T09:12:00.000Z"
+      },
+      "1788777841926": {
+        "eventId": "evt_ai_symposium_2026",
+        "timestamp": 1788777841926,
+        "studentId": "EC2026014",
+        "name": "Rohan Patel",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T10:44:01.925Z"
+      },
+      "1788777879706": {
+        "eventId": "evt_ai_symposium_2026",
+        "timestamp": 1788777879706,
+        "studentId": "ME2026033",
+        "name": "Sneha Verma",
+        "action": "CHECK_IN",
+        "overCapacityFlag": true,
+        "recordedAt": "2026-09-07T10:44:39.705Z"
+      }
+    },
+    "evt_hackathon_2026": {
+      "1788777971834": {
+        "eventId": "evt_hackathon_2026",
+        "timestamp": 1788777971834,
+        "studentId": "CS2026099",
+        "name": "Vikram Singh",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T10:46:11.833Z"
+      },
+      "1788777971836": {
+        "eventId": "evt_hackathon_2026",
+        "timestamp": 1788777971836,
+        "studentId": "CS2026100",
+        "name": "Ananya Roy",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T10:46:11.835Z"
+      }
+    },
+    "evt_cyber_workshop_2026": {},
+    "evt_automated_test_seminar_mtr3xz8y": {
+      "1788777508803": {
+        "eventId": "evt_automated_test_seminar_mtr3xz8y",
+        "timestamp": 1788777508803,
+        "studentId": "STU101",
+        "name": "Alice Johnson",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T10:38:28.802Z"
+      },
+      "1788777508805": {
+        "eventId": "evt_automated_test_seminar_mtr3xz8y",
+        "timestamp": 1788777508805,
+        "studentId": "STU102",
+        "name": "Bob Smith",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T10:38:28.804Z"
+      },
+      "1788777508806": {
+        "eventId": "evt_automated_test_seminar_mtr3xz8y",
+        "timestamp": 1788777508806,
+        "studentId": "STU103",
+        "name": "Charlie Brown",
+        "action": "CHECK_IN",
+        "overCapacityFlag": false,
+        "recordedAt": "2026-09-07T10:38:28.806Z"
+      },
+      "1788777508808": {
+        "eventId": "evt_automated_test_seminar_mtr3xz8y",
+        "timestamp": 1788777508808,
+        "studentId": "STU104",
+        "name": "Dana Scully",
+        "action": "CHECK_IN",
+        "overCapacityFlag": true,
+        "recordedAt": "2026-09-07T10:38:28.808Z"
+      }
+    }
+  }
+}
